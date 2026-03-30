@@ -9,9 +9,35 @@
 body{
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   background:#f0f2f5;color:#333;
-  margin:0 auto;padding:16px;padding-top:calc(16px + env(safe-area-inset-top, 0px));
+  margin:0 auto;padding:16px;padding-top:calc(80px + env(safe-area-inset-top, 0px));
   max-width:960px;
 }
+
+/* ── STICKY TOTAL BAR ── */
+#sticky{
+  position:fixed;top:0;left:0;right:0;
+  background:linear-gradient(135deg,#1a3a5c,#2d6aa0);
+  color:#fff;z-index:999;
+  padding:12px 20px;
+  padding-top:calc(12px + env(safe-area-inset-top, 0px));
+  box-shadow:0 2px 16px rgba(0,0,0,.25);
+}
+#sticky-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;max-width:960px;margin:0 auto;
+}
+#sticky .s-label{font-size:11px;opacity:.7;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+#sticky .s-total{font-size:24px;font-weight:800;letter-spacing:-.5px}
+#sticky .s-breakdown{font-size:11px;opacity:.6;text-align:right;line-height:1.6}
+.s-left{display:flex;align-items:center;gap:12px}
+.s-right{text-align:right}
+.s-change{
+  display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;
+  transition:all .3s;white-space:nowrap;
+}
+.s-change.up{background:rgba(255,100,100,.25);color:#ffaaaa}
+.s-change.down{background:rgba(100,255,150,.25);color:#aaffbb}
+.s-change.same{display:none}
 
 /* ── HEADER ── */
 .hdr{
@@ -37,30 +63,53 @@ body{
   white-space:nowrap;
 }
 
-/* ── TABS ── */
+/* ── TABS (CSS radio + JS enhanced) ── */
+input.tier-radio{display:none}
 .tab-bar{display:flex;gap:8px;margin-bottom:14px}
 .tab{
   flex:1;text-align:center;padding:10px 6px;border-radius:12px;
   font-size:13px;font-weight:600;cursor:pointer;
   border:2px solid #ddd;background:#fff;color:#666;
-  transition:all .2s;user-select:none;
-  -webkit-appearance:none;appearance:none;
-  font-family:inherit;line-height:1.4;
+  transition:all .15s;user-select:none;
   -webkit-tap-highlight-color:rgba(26,95,180,.15);
   touch-action:manipulation;
 }
-.tab:hover{border-color:#aac8e8;background:#f4f8fd}
 .tab:active{transform:scale(.96)}
-.tab.active{border-color:#1a5fb4;background:#e8f0fe;color:#1a5fb4}
 .tier-card{display:none}
-.tier-card.show{display:block}
 
-/* ── IMAGE FALLBACK ── */
-.img-fallback{
-  width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#e8f0fe,#f0f2f5);text-align:center;
-  padding:20px;font-size:14px;color:#1a5fb4;font-weight:600;line-height:1.5;
-}
+/* CSS-only tab switching (works without JS) */
+#r-wall-rec:checked ~ .tier-card[data-group="wall"][data-tier="rec"]{display:block}
+#r-wall-mid:checked ~ .tier-card[data-group="wall"][data-tier="mid"]{display:block}
+#r-wall-budget:checked ~ .tier-card[data-group="wall"][data-tier="budget"]{display:block}
+#r-floor-rec:checked ~ .tier-card[data-group="floor"][data-tier="rec"]{display:block}
+#r-floor-mid:checked ~ .tier-card[data-group="floor"][data-tier="mid"]{display:block}
+#r-floor-budget:checked ~ .tier-card[data-group="floor"][data-tier="budget"]{display:block}
+#r-shower-rec:checked ~ .tier-card[data-group="shower"][data-tier="rec"]{display:block}
+#r-shower-mid:checked ~ .tier-card[data-group="shower"][data-tier="mid"]{display:block}
+#r-shower-budget:checked ~ .tier-card[data-group="shower"][data-tier="budget"]{display:block}
+#r-drain-rec:checked ~ .tier-card[data-group="drain"][data-tier="rec"]{display:block}
+#r-drain-mid:checked ~ .tier-card[data-group="drain"][data-tier="mid"]{display:block}
+#r-drain-budget:checked ~ .tier-card[data-group="drain"][data-tier="budget"]{display:block}
+#r-edge-rec:checked ~ .tier-card[data-group="edge"][data-tier="rec"]{display:block}
+#r-edge-mid:checked ~ .tier-card[data-group="edge"][data-tier="mid"]{display:block}
+#r-edge-budget:checked ~ .tier-card[data-group="edge"][data-tier="budget"]{display:block}
+/* CSS-only active tab highlighting */
+#r-wall-rec:checked ~ .tab-bar[data-group="wall"] label:nth-child(1),
+#r-wall-mid:checked ~ .tab-bar[data-group="wall"] label:nth-child(2),
+#r-wall-budget:checked ~ .tab-bar[data-group="wall"] label:nth-child(3),
+#r-floor-rec:checked ~ .tab-bar[data-group="floor"] label:nth-child(1),
+#r-floor-mid:checked ~ .tab-bar[data-group="floor"] label:nth-child(2),
+#r-floor-budget:checked ~ .tab-bar[data-group="floor"] label:nth-child(3),
+#r-shower-rec:checked ~ .tab-bar[data-group="shower"] label:nth-child(1),
+#r-shower-mid:checked ~ .tab-bar[data-group="shower"] label:nth-child(2),
+#r-shower-budget:checked ~ .tab-bar[data-group="shower"] label:nth-child(3),
+#r-drain-rec:checked ~ .tab-bar[data-group="drain"] label:nth-child(1),
+#r-drain-mid:checked ~ .tab-bar[data-group="drain"] label:nth-child(2),
+#r-drain-budget:checked ~ .tab-bar[data-group="drain"] label:nth-child(3),
+#r-edge-rec:checked ~ .tab-bar[data-group="edge"] label:nth-child(1),
+#r-edge-mid:checked ~ .tab-bar[data-group="edge"] label:nth-child(2),
+#r-edge-budget:checked ~ .tab-bar[data-group="edge"] label:nth-child(3)
+{border-color:#1a5fb4;background:#e8f0fe;color:#1a5fb4}
 
 /* ── CARDS ── */
 .card{
@@ -95,6 +144,13 @@ body{
 .btn-amazon{background:#232f3e}
 .btn-fd{background:#00843d}
 
+/* ── IMG FALLBACK ── */
+.img-fallback{
+  width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#e8f0fe,#f0f2f5);text-align:center;
+  padding:20px;font-size:14px;color:#1a5fb4;font-weight:600;line-height:1.5;
+}
+
 /* ── SUMMARY ── */
 .summary{
   background:linear-gradient(135deg,#1a3a5c,#2d6aa0);color:#fff;
@@ -126,36 +182,28 @@ body{
 
 .footer{text-align:center;padding:24px 0 36px;font-size:12px;color:#aaa}
 
-/* ═══════════════════════════════════════════
-   DESKTOP (≥ 680px)
-   ═══════════════════════════════════════════ */
+/* ═══════════ DESKTOP (>= 680px) ═══════════ */
 @media (min-width:680px) {
-  body{padding:20px 32px;padding-top:84px}
-
+  body{padding:20px 32px;padding-top:calc(84px + env(safe-area-inset-top, 0px))}
   .hdr h1{font-size:34px}
   .hdr p{font-size:15px}
-
-  /* Horizontal card layout on desktop */
   .card-inner{flex-direction:row}
   .card-top{width:300px;min-width:300px}
   .card-img{height:100%;aspect-ratio:auto;min-height:220px}
-  .card-body{display:flex;flex-direction:column;justify-content:center;flex:1}
-
-  .tab{padding:12px 8px;font-size:14px}
-
   .img-fallback{aspect-ratio:auto;min-height:220px}
-
+  .card-body{display:flex;flex-direction:column;justify-content:center;flex:1}
+  .tab{padding:12px 8px;font-size:14px}
   .notes-grid{grid-template-columns:1fr 1fr}
-
   .s-breakdown br{display:none}
   .s-breakdown{white-space:nowrap}
 }
 
-/* ═══════════════════════════════════════════
-   SMALL MOBILE (≤ 380px)
-   ═══════════════════════════════════════════ */
+/* ═══════════ SMALL MOBILE (<= 380px) ═══════════ */
 @media (max-width:380px) {
-  body{padding:10px;padding-top:74px}
+  body{padding:10px;padding-top:calc(74px + env(safe-area-inset-top, 0px))}
+  #sticky{padding:10px 12px}
+  #sticky .s-total{font-size:20px}
+  #sticky .s-breakdown{font-size:9px}
   .hdr{padding:24px 16px}
   .hdr h1{font-size:22px}
   .tab{padding:8px 4px;font-size:11px}
@@ -167,6 +215,25 @@ body{
 </head>
 <body>
 
+<!-- ══════════════ STICKY TOTAL BAR ══════════════ -->
+<div id="sticky">
+  <div id="sticky-inner">
+    <div class="s-left">
+      <div>
+        <div class="s-label">Estimated Total</div>
+        <div class="s-total" id="grand-total">$343</div>
+      </div>
+      <div id="change-pill" class="s-change same"></div>
+    </div>
+    <div class="s-right">
+      <div class="s-breakdown" id="breakdown">
+        Wall $135 &bull; Floor $25<br>
+        Shower $69 &bull; Drain $58 &bull; Edges $56
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════ HEADER ══════════════ -->
 <div class="hdr">
   <h1>Bathroom Remodel</h1>
@@ -177,19 +244,22 @@ body{
 <!-- ══════════════ WALL TILE ══════════════ -->
 <div class="section">
   <div class="section-title">
-    <div class="left"><span>🧱</span> Wall Tile — Subway 3&times;6</div>
+    <div class="left"><span>🧱</span> Wall Tile &mdash; Subway 3&times;6</div>
     <div class="section-cost" id="cost-wall">$135</div>
   </div>
+  <input class="tier-radio" type="radio" name="wall" id="r-wall-rec" checked>
+  <input class="tier-radio" type="radio" name="wall" id="r-wall-mid">
+  <input class="tier-radio" type="radio" name="wall" id="r-wall-budget">
   <div class="tab-bar" data-group="wall">
-    <button class="tab active" data-group="wall" data-tier="rec">Our Pick</button>
-    <button class="tab" data-group="wall" data-tier="mid">Upgrade</button>
-    <button class="tab" data-group="wall" data-tier="budget">Budget</button>
+    <label class="tab" for="r-wall-rec">Our Pick</label>
+    <label class="tab" for="r-wall-mid">Upgrade</label>
+    <label class="tab" for="r-wall-budget">Budget</label>
   </div>
 
-  <div class="card recommended tier-card show" data-group="wall" data-tier="rec" data-price="135" data-label="Wall Tile">
+  <div class="card recommended tier-card" data-group="wall" data-tier="rec" data-price="135">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/wall-rec-daltile-glossy.jpg" alt="Daltile subway tile">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/c64c90dc-0bc1-49fc-b112-90fd7bb4c4f3/svn/bright-white-daltile-ceramic-tile-re1536modhd1p4-64_600.jpg" alt="Daltile subway tile" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-best">GOOD QUALITY &middot; GREAT PRICE</span>
         <span class="rec-ribbon">OUR PICK</span>
       </div>
@@ -197,48 +267,37 @@ body{
         <div class="card-name">Daltile Restore Bright White 3&times;6 Glossy</div>
         <div class="card-store">Home Depot &middot; Ceramic &middot; 12.5 SF/case</div>
         <div class="card-desc">Classic glossy white subway tile. Top seller with 3,600+ reviews. Need 9 cases for 100 SF + 10% waste.</div>
-        <div class="price-row">
-          <span class="price">$14.98</span>
-          <span class="price-note">/case &middot; ~$135 total (9 cases)</span>
-        </div>
+        <div class="price-row"><span class="price">$14.98</span><span class="price-note">/case &middot; ~$135 total (9 cases)</span></div>
         <div><a class="btn btn-hd" href="https://www.homedepot.com/p/Daltile-Restore-Bright-White-3-in-x-6-in-Glossy-Ceramic-Subway-Wall-Tile-12-5-sq-ft-case-RE1536MODHD1P4/302575146" target="_blank">View on Home Depot &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="wall" data-tier="mid" data-price="255" data-label="Wall Tile">
+  <div class="card tier-card" data-group="wall" data-tier="mid" data-price="255">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/wall-mid-daltile-bevel.jpg" alt="Daltile bevel subway tile">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/11c48eb6-17a4-4c2c-9b5d-74ff6833cbcc/svn/bright-white-daltile-ceramic-tile-re1536modbhd1p4-64_600.jpg" alt="Daltile bevel subway tile" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-mid">SLIGHT UPGRADE</span>
       </div>
       <div class="card-body">
         <div class="card-name">Daltile Restore Bright White 3&times;6 Beveled</div>
         <div class="card-store">Home Depot &middot; Ceramic Bevel &middot; 10 SF/case</div>
         <div class="card-desc">Same Daltile quality but with a beveled edge for a more dimensional, upscale look. Adds character without going overboard. Need 11 cases.</div>
-        <div class="price-row">
-          <span class="price">$23.20</span>
-          <span class="price-note">/case &middot; ~$255 total (11 cases)</span>
-        </div>
+        <div class="price-row"><span class="price">$23.20</span><span class="price-note">/case &middot; ~$255 total (11 cases)</span></div>
         <div><a class="btn btn-hd" href="https://www.homedepot.com/p/Daltile-Restore-3-in-x-6-in-Ceramic-Bevel-Bright-White-Subway-Tile-10-sq-ft-case-RE1536MODBHD1P4/302575220" target="_blank">View on Home Depot &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="wall" data-tier="budget" data-price="175" data-label="Wall Tile">
+  <div class="card tier-card" data-group="wall" data-tier="budget" data-price="175">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/wall-budget-olean.jpg" alt="American Olean subway tile">
+        <img class="card-img" src="https://mobileimages.lowes.com/productimages/436fd7d4-28b7-4a06-a61a-5ae6af2f1e43/10485180.jpg?size=pdhism" alt="American Olean subway tile" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-budget">BUDGET PICK</span>
       </div>
       <div class="card-body">
         <div class="card-name">American Olean Starting Line Gloss White 3&times;6</div>
         <div class="card-store">Lowe's &middot; Glazed Ceramic &middot; Sold per piece</div>
-        <div class="card-desc">Reliable basic white subway tile. Solid quality for a rental — just not as refined as Daltile. Sold individually so you buy exactly what you need.</div>
-        <div class="price-row">
-          <span class="price">~$0.21</span>
-          <span class="price-note">/piece &middot; ~$175 total (100+ SF)</span>
-        </div>
+        <div class="card-desc">Reliable basic white subway tile. Solid quality for a rental &mdash; just not as refined as Daltile. Sold individually so you buy exactly what you need.</div>
+        <div class="price-row"><span class="price">~$0.21</span><span class="price-note">/piece &middot; ~$175 total (100+ SF)</span></div>
         <div><a class="btn btn-lowes" href="https://www.lowes.com/pd/American-Olean-Starting-Line-Gloss-White-3-in-x-6-in-Glazed-Ceramic-Subway-Wall-Tile-0-12-sq-ft-Piece/3083627" target="_blank">View on Lowe's &rarr;</a></div>
       </div>
     </div>
@@ -248,68 +307,60 @@ body{
 <!-- ══════════════ FLOOR TILE ══════════════ -->
 <div class="section">
   <div class="section-title">
-    <div class="left"><span>🪨</span> Floor Tile — 12&times;24 Porcelain</div>
+    <div class="left"><span>🪨</span> Floor Tile &mdash; 12&times;24 Porcelain</div>
     <div class="section-cost" id="cost-floor">$25</div>
   </div>
+  <input class="tier-radio" type="radio" name="floor" id="r-floor-rec" checked>
+  <input class="tier-radio" type="radio" name="floor" id="r-floor-mid">
+  <input class="tier-radio" type="radio" name="floor" id="r-floor-budget">
   <div class="tab-bar" data-group="floor">
-    <button class="tab active" data-group="floor" data-tier="rec">Our Pick</button>
-    <button class="tab" data-group="floor" data-tier="mid">Upgrade</button>
-    <button class="tab" data-group="floor" data-tier="budget">Budget</button>
+    <label class="tab" for="r-floor-rec">Our Pick</label>
+    <label class="tab" for="r-floor-mid">Upgrade</label>
+    <label class="tab" for="r-floor-budget">Budget</label>
   </div>
 
-  <div class="card recommended tier-card show" data-group="floor" data-tier="rec" data-price="25" data-label="Floor Tile">
+  <div class="card recommended tier-card" data-group="floor" data-tier="rec" data-price="25">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/floor-msi-carrara.jpg" alt="MSI Carrara floor tile">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/d97f28a6-3289-4637-b45f-cf0a05175cc1/svn/capel-bianco-msi-porcelain-tile-nhdcarbia1224-64_600.jpg" alt="MSI Carrara floor tile" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-best">GOOD QUALITY &middot; GREAT PRICE</span>
         <span class="rec-ribbon">OUR PICK</span>
       </div>
       <div class="card-body">
         <div class="card-name">MSI Carrara Bianco 12&times;24 Matte Porcelain</div>
         <div class="card-store">Home Depot &middot; Marble-Look Porcelain &middot; 16 SF/case</div>
-        <div class="card-desc">Clean white with subtle veining — looks like marble but it's durable porcelain. Matte finish is safe for wet floors. 1 case covers 20 SF + cuts.</div>
-        <div class="price-row">
-          <span class="price">$25.48</span>
-          <span class="price-note">/case &middot; ~$25 total</span>
-        </div>
+        <div class="card-desc">Clean white with subtle veining &mdash; looks like marble but it's durable porcelain. Matte finish is safe for wet floors. 1 case covers 20 SF + cuts.</div>
+        <div class="price-row"><span class="price">$25.48</span><span class="price-note">/case &middot; ~$25 total</span></div>
         <div><a class="btn btn-hd" href="https://www.homedepot.com/p/MSI-Carrara-Bianco-12-in-x-24-in-Matte-Porcelain-Floor-and-Wall-Tile-16-sq-ft-Case-NHDCARBIA1224/308715517" target="_blank">View on Home Depot &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="floor" data-tier="mid" data-price="39" data-label="Floor Tile">
+  <div class="card tier-card" data-group="floor" data-tier="mid" data-price="39">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/floor-mid-satori.jpg" alt="Satori Windsor White tile">
+        <img class="card-img" src="https://mobileimages.lowes.com/productimages/82239987-5099-472b-bdff-3af561e31a16/62809118.jpg?size=pdhism" alt="Satori Windsor White tile" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-mid">SLIGHT UPGRADE</span>
       </div>
       <div class="card-body">
         <div class="card-name">Satori Windsor White 12&times;24 Matte Porcelain</div>
         <div class="card-store">Lowe's &middot; Dense Porcelain &middot; 15.44 SF/carton</div>
         <div class="card-desc">Pure bright white, no veining. Very clean modern look. Dense and moisture resistant. Need 2 cartons to cover 20 SF safely.</div>
-        <div class="price-row">
-          <span class="price">$38.64</span>
-          <span class="price-note">/carton &middot; ~$39 total (2 cartons)</span>
-        </div>
+        <div class="price-row"><span class="price">$38.64</span><span class="price-note">/carton &middot; ~$39 total (2 cartons)</span></div>
         <div><a class="btn btn-lowes" href="https://www.lowes.com/pd/Satori-8-Pack-Windsor-White-Matte-Porcelain-12-in-x-24-in-Matte-Porcelain-Floor-and-Wall-Tile/1002658170" target="_blank">View on Lowe's &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="floor" data-tier="budget" data-price="23" data-label="Floor Tile">
+  <div class="card tier-card" data-group="floor" data-tier="budget" data-price="23">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/floor-msi-carrara.jpg" alt="MSI Carrara White tile">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/d97f28a6-3289-4637-b45f-cf0a05175cc1/svn/capel-bianco-msi-porcelain-tile-nhdcarbia1224-64_600.jpg" alt="MSI Carrara White tile" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-budget">BUDGET PICK</span>
       </div>
       <div class="card-body">
         <div class="card-name">MSI Carrara White 12&times;24 Matte Porcelain</div>
         <div class="card-store">Home Depot &middot; Porcelain &middot; 16 SF/case</div>
         <div class="card-desc">Very similar to our pick but the standard Carrara White colorway. Same quality porcelain, slightly lower price. 1 case covers the floor.</div>
-        <div class="price-row">
-          <span class="price">$22.98</span>
-          <span class="price-note">/case &middot; ~$23 total</span>
-        </div>
+        <div class="price-row"><span class="price">$22.98</span><span class="price-note">/case &middot; ~$23 total</span></div>
         <div><a class="btn btn-hd" href="https://www.homedepot.com/p/MSI-Carrara-White-12-in-x-24-in-Matte-Porcelain-Marble-Look-Floor-and-Wall-Tile-16-sq-ft-Case-NHDCARWHI1224/310005584" target="_blank">View on Home Depot &rarr;</a></div>
       </div>
     </div>
@@ -319,19 +370,22 @@ body{
 <!-- ══════════════ SHOWER KIT ══════════════ -->
 <div class="section">
   <div class="section-title">
-    <div class="left"><span>🚿</span> Shower Kit — Valve + Handle + Head</div>
+    <div class="left"><span>🚿</span> Shower Kit &mdash; Valve + Handle + Head</div>
     <div class="section-cost" id="cost-shower">$69</div>
   </div>
+  <input class="tier-radio" type="radio" name="shower" id="r-shower-rec" checked>
+  <input class="tier-radio" type="radio" name="shower" id="r-shower-mid">
+  <input class="tier-radio" type="radio" name="shower" id="r-shower-budget">
   <div class="tab-bar" data-group="shower">
-    <button class="tab active" onclick="showTier('shower','rec')">Our Pick</button>
-    <button class="tab" onclick="showTier('shower','mid')">Upgrade</button>
-    <button class="tab" onclick="showTier('shower','budget')">Budget</button>
+    <label class="tab" for="r-shower-rec">Our Pick</label>
+    <label class="tab" for="r-shower-mid">Upgrade</label>
+    <label class="tab" for="r-shower-budget">Budget</label>
   </div>
 
-  <div class="card recommended tier-card show" data-group="shower" data-tier="rec" data-price="69" data-label="Shower Kit">
+  <div class="card recommended tier-card" data-group="shower" data-tier="rec" data-price="69">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/shower-rec-glacier-bay.jpg" alt="Glacier Bay shower kit">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/03b962f1-6a0f-4ec6-872d-dacaa88fcddd/svn/chrome-glacier-bay-shower-faucets-hd873x-0901-64_600.jpg" alt="Glacier Bay shower kit" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-best">GOOD QUALITY &middot; GREAT PRICE</span>
         <span class="rec-ribbon">OUR PICK</span>
       </div>
@@ -339,48 +393,37 @@ body{
         <div class="card-name">Glacier Bay Builders 1-Handle Shower Faucet</div>
         <div class="card-store">Home Depot &middot; Chrome &middot; Valve Included</div>
         <div class="card-desc">Pressure-balance valve prevents scalding. Ceramic disc valves for durability. Handle, showerhead, and valve all included. Perfect for a rental.</div>
-        <div class="price-row">
-          <span class="price">$69</span>
-          <span class="price-note">complete kit</span>
-        </div>
+        <div class="price-row"><span class="price">$69</span><span class="price-note">complete kit</span></div>
         <div><a class="btn btn-hd" href="https://www.homedepot.com/p/Glacier-Bay-Builders-Single-Handle-1-Spray-Pressure-Balance-Shower-Faucet-1-8-GPM-Ceramic-Disc-Valves-Integral-stops-in-Chrome-HD873X-0901/301879836" target="_blank">View on Home Depot &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="shower" data-tier="mid" data-price="89" data-label="Shower Kit">
+  <div class="card tier-card" data-group="shower" data-tier="mid" data-price="89">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/shower-mid-moen.jpg" alt="Moen Adler shower kit">
+        <img class="card-img" src="https://mobileimages.lowes.com/productimages/8be6d4e0-9c6f-4ad9-8d68-5fd9ad0eb72f/07700276.jpg?size=pdhz" alt="Moen Adler shower kit" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-mid">SLIGHT UPGRADE</span>
       </div>
       <div class="card-body">
         <div class="card-name">Moen Adler Posi-Temp Shower Only</div>
         <div class="card-store">Lowe's &middot; Chrome &middot; Valve Included</div>
         <div class="card-desc">Name-brand Moen with Posi-Temp technology that holds water temp within 2&deg;F. Multi-function showerhead. Backed by Moen's lifetime warranty.</div>
-        <div class="price-row">
-          <span class="price">$89</span>
-          <span class="price-note">complete kit</span>
-        </div>
+        <div class="price-row"><span class="price">$89</span><span class="price-note">complete kit</span></div>
         <div><a class="btn btn-lowes" href="https://www.lowes.com/pd/Moen-Adler-Chrome-1-Handle-Shower-Faucet-with-Valve/1000126713" target="_blank">View on Lowe's &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="shower" data-tier="budget" data-price="55" data-label="Shower Kit">
+  <div class="card tier-card" data-group="shower" data-tier="budget" data-price="55">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/shower-budget-delta.jpg" alt="Delta Foundations shower">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/4dd170e4-c811-4328-bd13-1135f9209c98/svn/chrome-delta-shower-faucets-b112900c-64_600.jpg" alt="Delta Foundations shower" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-budget">BUDGET PICK</span>
       </div>
       <div class="card-body">
         <div class="card-name">Delta Foundations 1-Handle Shower Faucet</div>
         <div class="card-store">Home Depot &middot; Chrome &middot; Valve Included</div>
         <div class="card-desc">Solid Delta quality at the lowest price. Monitor scald-guard valve. Simple single-handle design. WaterSense certified. Gets the job done.</div>
-        <div class="price-row">
-          <span class="price">$55</span>
-          <span class="price-note">complete kit</span>
-        </div>
+        <div class="price-row"><span class="price">$55</span><span class="price-note">complete kit</span></div>
         <div><a class="btn btn-hd" href="https://www.homedepot.com/p/Delta-Foundations-Single-Handle-1-Spray-Shower-Faucet-in-Chrome-Valve-Included-B112900C/303669808" target="_blank">View on Home Depot &rarr;</a></div>
       </div>
     </div>
@@ -390,68 +433,60 @@ body{
 <!-- ══════════════ LINEAR DRAIN ══════════════ -->
 <div class="section">
   <div class="section-title">
-    <div class="left"><span>🔲</span> Linear Drain — 24" Stainless Steel</div>
+    <div class="left"><span>🔲</span> Linear Drain &mdash; 24" Stainless Steel</div>
     <div class="section-cost" id="cost-drain">$58</div>
   </div>
+  <input class="tier-radio" type="radio" name="drain" id="r-drain-rec" checked>
+  <input class="tier-radio" type="radio" name="drain" id="r-drain-mid">
+  <input class="tier-radio" type="radio" name="drain" id="r-drain-budget">
   <div class="tab-bar" data-group="drain">
-    <button class="tab active" onclick="showTier('drain','rec')">Our Pick</button>
-    <button class="tab" onclick="showTier('drain','mid')">Upgrade</button>
-    <button class="tab" onclick="showTier('drain','budget')">Budget</button>
+    <label class="tab" for="r-drain-rec">Our Pick</label>
+    <label class="tab" for="r-drain-mid">Upgrade</label>
+    <label class="tab" for="r-drain-budget">Budget</label>
   </div>
 
-  <div class="card recommended tier-card show" data-group="drain" data-tier="rec" data-price="58" data-label="Linear Drain">
+  <div class="card recommended tier-card" data-group="drain" data-tier="rec" data-price="58">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/drain-neodrain.jpg" alt="Neodrain linear drain">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/186367347ccc43d49d1d1c3d65ab5a78/svn/matte-black-neodrain-shower-drains-za3-24-t02-mb-64_600.jpg" alt="Neodrain linear drain" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-best">GOOD QUALITY &middot; GREAT PRICE</span>
         <span class="rec-ribbon">OUR PICK</span>
       </div>
       <div class="card-body">
-        <div class="card-name">Neodrain 24" Linear Drain — Tile-In Grate</div>
+        <div class="card-name">Neodrain 24" Linear Drain &mdash; Tile-In Grate</div>
         <div class="card-store">Amazon &middot; 304 Stainless Steel &middot; Brushed Finish</div>
         <div class="card-desc">2-in-1: use the flat cover OR cut a tile to sit on top for a seamless look. 304 SS, leveling feet, hair strainer included. 4,000+ reviews.</div>
-        <div class="price-row">
-          <span class="price">$58</span>
-          <span class="price-note">complete unit</span>
-        </div>
+        <div class="price-row"><span class="price">$58</span><span class="price-note">complete unit</span></div>
         <div><a class="btn btn-amazon" href="https://www.amazon.com/Neodrain-Stainless-Rectangle-Adjustable-Leveling/dp/B0794NYZFK" target="_blank">View on Amazon &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="drain" data-tier="mid" data-price="178" data-label="Linear Drain">
+  <div class="card tier-card" data-group="drain" data-tier="mid" data-price="178">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/drain-mid-oatey.jpg" alt="Oatey Designline drain">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/052f9dc1-3ca6-489e-9878-241a35387759/svn/stainless-steel-oatey-shower-drains-dls2240r2-64_600.jpg" alt="Oatey Designline drain" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-mid">PRO GRADE</span>
       </div>
       <div class="card-body">
         <div class="card-name">Oatey Designline 24" Linear Drain</div>
         <div class="card-store">Home Depot &middot; 304 Stainless Steel &middot; Square Pattern</div>
         <div class="card-desc">Professional-grade drain from a trusted plumbing brand. Heavier stainless steel build. More expensive but built to last decades without issue.</div>
-        <div class="price-row">
-          <span class="price">$178</span>
-          <span class="price-note">complete unit</span>
-        </div>
+        <div class="price-row"><span class="price">$178</span><span class="price-note">complete unit</span></div>
         <div><a class="btn btn-hd" href="https://www.homedepot.com/p/Oatey-Designline-24-in-Stainless-Steel-Linear-Shower-Drain-with-Square-Pattern-Drain-Cover-DLS2240R2/302775842" target="_blank">View on Home Depot &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="drain" data-tier="budget" data-price="50" data-label="Linear Drain">
+  <div class="card tier-card" data-group="drain" data-tier="budget" data-price="50">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/drain-neodrain.jpg" alt="Neodrain square pattern">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/186367347ccc43d49d1d1c3d65ab5a78/svn/matte-black-neodrain-shower-drains-za3-24-t02-mb-64_600.jpg" alt="Neodrain square pattern" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-budget">BUDGET PICK</span>
       </div>
       <div class="card-body">
-        <div class="card-name">Neodrain 24" Linear Drain — Square Pattern</div>
+        <div class="card-name">Neodrain 24" Linear Drain &mdash; Square Pattern</div>
         <div class="card-store">Lowe's &middot; 304 Stainless Steel &middot; Brushed Finish</div>
         <div class="card-desc">Same Neodrain quality as our pick but with a visible square-pattern grate instead of tile-in. Slightly cheaper and still looks clean.</div>
-        <div class="price-row">
-          <span class="price">$50</span>
-          <span class="price-note">complete unit</span>
-        </div>
+        <div class="price-row"><span class="price">$50</span><span class="price-note">complete unit</span></div>
         <div><a class="btn btn-lowes" href="https://www.lowes.com/pd/Neodrain-24-in-Stainless-Steel-Linear-Shower-Drain-with-Square-Pattern-Surface/5015181763" target="_blank">View on Lowe's &rarr;</a></div>
       </div>
     </div>
@@ -461,19 +496,22 @@ body{
 <!-- ══════════════ METAL EDGES ══════════════ -->
 <div class="section">
   <div class="section-title">
-    <div class="left"><span>📐</span> Metal Edges — Tile Trim 3/8"</div>
+    <div class="left"><span>📐</span> Metal Edges &mdash; Tile Trim 3/8"</div>
     <div class="section-cost" id="cost-edge">$56</div>
   </div>
+  <input class="tier-radio" type="radio" name="edge" id="r-edge-rec" checked>
+  <input class="tier-radio" type="radio" name="edge" id="r-edge-mid">
+  <input class="tier-radio" type="radio" name="edge" id="r-edge-budget">
   <div class="tab-bar" data-group="edge">
-    <button class="tab active" onclick="showTier('edge','rec')">Our Pick</button>
-    <button class="tab" onclick="showTier('edge','mid')">Upgrade</button>
-    <button class="tab" onclick="showTier('edge','budget')">Budget</button>
+    <label class="tab" for="r-edge-rec">Our Pick</label>
+    <label class="tab" for="r-edge-mid">Upgrade</label>
+    <label class="tab" for="r-edge-budget">Budget</label>
   </div>
 
-  <div class="card recommended tier-card show" data-group="edge" data-tier="rec" data-price="56" data-label="Metal Edges">
+  <div class="card recommended tier-card" data-group="edge" data-tier="rec" data-price="56">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/edge-schluter.jpg" alt="Schluter tile trim">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/b79ef9c8-7ccb-4bbb-850c-aae6d85a2b10/svn/satin-nickel-anodized-aluminum-schluter-tile-edging-trim-a100at-64_600.jpg" alt="Schluter tile trim" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-best">GOOD QUALITY &middot; GREAT PRICE</span>
         <span class="rec-ribbon">OUR PICK</span>
       </div>
@@ -481,48 +519,37 @@ body{
         <div class="card-name">Schluter Schiene 3/8" Satin Nickel</div>
         <div class="card-store">Home Depot &middot; Anodized Aluminum &middot; 8 ft pieces</div>
         <div class="card-desc">Industry-standard tile edge trim. Satin nickel finish matches any chrome hardware. L-angle profile protects tile edges. Need ~4 pieces.</div>
-        <div class="price-row">
-          <span class="price">$13.98</span>
-          <span class="price-note">/piece &middot; ~$56 for 4</span>
-        </div>
+        <div class="price-row"><span class="price">$13.98</span><span class="price-note">/piece &middot; ~$56 for 4</span></div>
         <div><a class="btn btn-hd" href="https://www.homedepot.com/p/Schluter-Schiene-Satin-Nickel-Anodized-Aluminum-3-8-in-x-8-ft-2-1-2-in-Metal-Tile-Edging-Trim-A100AT/202022523" target="_blank">View on Home Depot &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="edge" data-tier="mid" data-price="60" data-label="Metal Edges">
+  <div class="card tier-card" data-group="edge" data-tier="mid" data-price="60">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/edge-schluter.jpg" alt="Schluter Jolly trim">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/b79ef9c8-7ccb-4bbb-850c-aae6d85a2b10/svn/satin-nickel-anodized-aluminum-schluter-tile-edging-trim-a100at-64_600.jpg" alt="Schluter Jolly trim" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-mid">SLIGHT UPGRADE</span>
       </div>
       <div class="card-body">
         <div class="card-name">Schluter Jolly 3/8" Brushed Nickel</div>
         <div class="card-store">Lowe's &middot; Anodized Aluminum &middot; 8 ft pieces</div>
-        <div class="card-desc">Jolly profile is specifically designed for wall tile edges — slightly more refined. Brushed nickel finish for a warmer tone. Need ~4 pieces.</div>
-        <div class="price-row">
-          <span class="price">$15.08</span>
-          <span class="price-note">/piece &middot; ~$60 for 4</span>
-        </div>
+        <div class="card-desc">Jolly profile is specifically designed for wall tile edges &mdash; slightly more refined. Brushed nickel finish for a warmer tone. Need ~4 pieces.</div>
+        <div class="price-row"><span class="price">$15.08</span><span class="price-note">/piece &middot; ~$60 for 4</span></div>
         <div><a class="btn btn-lowes" href="https://www.lowes.com/pd/Schluter-Systems-Jolly-0-375-in-W-x-98-5-in-L-Brushed-Nickel-Anodized-Aluminum-L-angle-Tile-Edge-Trim/5014775853" target="_blank">View on Lowe's &rarr;</a></div>
       </div>
     </div>
   </div>
-
-  <div class="card tier-card" data-group="edge" data-tier="budget" data-price="58" data-label="Metal Edges">
+  <div class="card tier-card" data-group="edge" data-tier="budget" data-price="58">
     <div class="card-inner">
       <div class="card-top">
-        <img class="card-img" src="images/edge-schluter.jpg" alt="Schluter Jolly Floor Decor">
+        <img class="card-img" src="https://images.thdstatic.com/productImages/b79ef9c8-7ccb-4bbb-850c-aae6d85a2b10/svn/satin-nickel-anodized-aluminum-schluter-tile-edging-trim-a100at-64_600.jpg" alt="Schluter Jolly Floor Decor" onerror="this.onerror=null;this.style.display='none';var d=document.createElement('div');d.className='img-fallback';d.textContent=this.alt;this.parentNode.insertBefore(d,this);">
         <span class="badge badge-budget">BUDGET PICK</span>
       </div>
       <div class="card-body">
         <div class="card-name">Schluter Jolly 3/8" Brushed Nickel</div>
         <div class="card-store">Floor &amp; Decor &middot; Anodized Aluminum &middot; 8 ft pieces</div>
         <div class="card-desc">Same Schluter Jolly profile from Floor &amp; Decor which sometimes has slightly lower pricing. Check your local store availability.</div>
-        <div class="price-row">
-          <span class="price">$14.49</span>
-          <span class="price-note">/piece &middot; ~$58 for 4</span>
-        </div>
+        <div class="price-row"><span class="price">$14.49</span><span class="price-note">/piece &middot; ~$58 for 4</span></div>
         <div><a class="btn btn-fd" href="https://www.flooranddecor.com/schluter-installation-materials/schluter-jolly-brushed-nickel-anodized-aluminum-3-8in.-profile-100183003.html" target="_blank">View on Floor &amp; Decor &rarr;</a></div>
       </div>
     </div>
@@ -563,7 +590,7 @@ body{
     <h3>Things to Confirm with Contractor</h3>
     <ul>
       <li>Preferred shower valve brand (we picked Glacier Bay)</li>
-      <li>Linear drain size — 24" or 30"?</li>
+      <li>Linear drain size &mdash; 24" or 30"?</li>
       <li>Exact number of metal edge pieces needed</li>
       <li>He said he can buy the metal edges himself &amp; get reimbursed</li>
     </ul>
@@ -571,19 +598,79 @@ body{
   <div class="notes">
     <h3>Shopping Notes</h3>
     <ul>
-      <li>4 of 5 "Our Pick" items are at Home Depot — nearly a one-stop trip</li>
+      <li>4 of 5 "Our Pick" items are at Home Depot &mdash; nearly a one-stop trip</li>
       <li>Linear drain ships from Amazon (2-day Prime)</li>
-      <li>Prices checked March 2026 — tap links to verify before buying</li>
+      <li>Prices checked March 2026 &mdash; tap links to verify before buying</li>
       <li>Contractor handles: demo, drywall, RedGard waterproofing, slope work</li>
     </ul>
   </div>
 </div>
 
-<div class="footer">
-  Bathroom Remodel Materials &middot; March 2026
-</div>
+<div class="footer">Bathroom Remodel Materials &middot; March 2026</div>
 
+<script>
+var prices = {
+  wall:   { rec: 135, mid: 255, budget: 175 },
+  floor:  { rec: 25,  mid: 39,  budget: 23  },
+  shower: { rec: 69,  mid: 89,  budget: 55  },
+  drain:  { rec: 58,  mid: 178, budget: 50  },
+  edge:   { rec: 56,  mid: 60,  budget: 58  }
+};
+var tierLabels = { rec: 'Our Pick', mid: 'Upgrade', budget: 'Budget' };
+var pillClass  = { rec: 'pill-rec', mid: 'pill-mid', budget: 'pill-budget' };
+var selected = { wall: 'rec', floor: 'rec', shower: 'rec', drain: 'rec', edge: 'rec' };
+var baseTotal = 343; // all "Our Pick" — pill always shows diff from this
 
+function calcTotal() {
+  var sum = 0;
+  for (var g in selected) sum += prices[g][selected[g]];
+  return sum;
+}
+
+function updateUI() {
+  var next = calcTotal();
+  var diff = next - baseTotal;
+  document.getElementById('grand-total').textContent = '$' + next;
+
+  var pill = document.getElementById('change-pill');
+  if (diff > 0) {
+    pill.textContent = '+$' + diff;
+    pill.className = 's-change up';
+  } else if (diff < 0) {
+    pill.textContent = '-$' + Math.abs(diff);
+    pill.className = 's-change down';
+  } else {
+    pill.className = 's-change same';
+  }
+
+  document.getElementById('breakdown').innerHTML =
+    'Wall $' + prices.wall[selected.wall] + ' &bull; Floor $' + prices.floor[selected.floor] + '<br>' +
+    'Shower $' + prices.shower[selected.shower] + ' &bull; Drain $' + prices.drain[selected.drain] + ' &bull; Edges $' + prices.edge[selected.edge];
+
+  var groups = ['wall','floor','shower','drain','edge'];
+  for (var i = 0; i < groups.length; i++) {
+    var group = groups[i];
+    var t = selected[group];
+    var p = prices[group][t];
+    document.getElementById('sum-' + group).textContent = '$' + p;
+    document.getElementById('cost-' + group).textContent = '$' + p;
+    var pl = document.getElementById('pill-' + group);
+    pl.textContent = tierLabels[t];
+    pl.className = 'tier-pill ' + pillClass[t];
+  }
+  document.getElementById('sum-grand').textContent = '$' + next;
+}
+
+// Listen for radio changes to update totals
+var radios = document.querySelectorAll('.tier-radio');
+for (var i = 0; i < radios.length; i++) {
+  radios[i].addEventListener('change', function() {
+    var parts = this.id.split('-'); // "r-wall-rec" → ["r","wall","rec"]
+    selected[parts[1]] = parts[2];
+    updateUI();
+  });
+}
+</script>
 
 </body>
 </html>
