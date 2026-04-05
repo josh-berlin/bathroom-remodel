@@ -63,13 +63,13 @@ body{
 #store-bar .store-btn.active-lowes{border-color:#004990;background:#e8f0fe;color:#004990}
 #store-bar .store-btn.active-fd{border-color:#00843d;background:#e8f8ef;color:#00843d}
 
-/* == STORE VISIBILITY == */
-body.store-hd [data-store="lowes"],
-body.store-hd [data-store="fd"],
-body.store-lowes [data-store="hd"],
-body.store-lowes [data-store="fd"],
-body.store-fd [data-store="hd"],
-body.store-fd [data-store="lowes"] {
+/* == STORE VISIBILITY (only hide inside .section, not store buttons) == */
+body.store-hd .section [data-store="lowes"],
+body.store-hd .section [data-store="fd"],
+body.store-lowes .section [data-store="hd"],
+body.store-lowes .section [data-store="fd"],
+body.store-fd .section [data-store="hd"],
+body.store-fd .section [data-store="lowes"] {
   display:none !important;
 }
 
